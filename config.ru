@@ -2,5 +2,5 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
-require 'init'
+require File.join(File.dirname(__FILE__), 'init.rb')
 run Ornitorrinco::Init.new
