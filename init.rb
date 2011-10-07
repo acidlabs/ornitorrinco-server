@@ -16,6 +16,7 @@ module Ornitorrinco
     
     get '/' do
       begin
+        headers['Cache-Control'] = "public; max-age=#{365*24*60*60}"
         response = GEOIP.city request.ip
         response ? {:city => response.to_hash[:city_name]}.to_json : raise(Error)
       rescue
