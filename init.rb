@@ -17,7 +17,7 @@ module Ornitorrinco
     get '/' do
       begin
         response = GEOIP.city request.ip
-        response ? response.to_json : raise(Error)
+        response ? {:city => response.to_hash[:city_name]}.to_json : raise(Error)
       rescue
         "City not found".to_json
       end
