@@ -22,7 +22,7 @@ module Ornitorrinco
         
     get '/location/:ip' do
       begin        
-        city = settings.cache.fetch("#{params[:ip]}") { "#{GEOIP.city(params[:ip]).to_hash[:city_name]}" }
+        city = settings.cache.get("#{params[:ip]}") { "#{GEOIP.city(params[:ip]).to_hash[:city_name]}" }
         { :city => city }.to_json
       rescue 
         { :city => 'not found' }.to_json
