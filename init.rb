@@ -1,19 +1,24 @@
 require 'yajl/json_gem'
+require 'sinatra/cache'
 
 module Ornitorrinco  
   class Init < Sinatra::Base
-    register Sinatra::Cache, :redis_store => ENV["REDIS_URL"]
     
     configure do
       env = ENV['SINATRA_ENV'] || 'development'
+      
       GEOIP = GeoIP.new('config/GeoLiteCity.dat')
+      
+      register Sinatra::Cache
+      set :cache_enabled, true
+      set :redis_store, RedisStore.new(ENV['REDIS_URL'])
     end
     
     mime_type :json, 'application/json'
     
     before do
       content_type :json
-      headers['Cache-Control'] = "public; max-age=#{365*24*60*60}"
+      cache_control :public, :max_age => "#{365*24*60*60}".to_i
     end
         
     get '/location/:ip' do
