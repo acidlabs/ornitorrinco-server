@@ -2,7 +2,7 @@ require 'yajl/json_gem'
 
 module Ornitorrinco  
   class Init < Sinatra::Base
-    register Sinatra::Cache
+    register Sinatra::Cache, :redis_store => ENV["REDIS_URL"]
     
     configure do
       env = ENV['SINATRA_ENV'] || 'development'
