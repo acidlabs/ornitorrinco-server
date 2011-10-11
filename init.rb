@@ -11,7 +11,7 @@ module Ornitorrinco
       
       register Sinatra::Cache
       set :cache_enabled, true
-      set :redis_store, RedisStore.new(ENV['REDIS_URL'])
+      #set :redis_store, RedisStore.new(ENV['REDIS_URL'])
     end
     
     mime_type :json, 'application/json'
