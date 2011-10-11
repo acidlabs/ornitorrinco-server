@@ -2,7 +2,8 @@ require 'yajl/json_gem'
 
 module Ornitorrinco  
   class Init < Sinatra::Base
-
+    register Sinatra::Cache
+    
     configure do
       env = ENV['SINATRA_ENV'] || 'development'
       GEOIP = GeoIP.new('config/GeoLiteCity.dat')
