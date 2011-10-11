@@ -8,12 +8,12 @@ module Ornitorrinco
       
       GEOIP = GeoIP.new('config/GeoLiteCity.dat')
       
-      #uri = URI.parse ENV['REDIS_URL']
       #set :cache, Sinatra::Cache::RedisStore.new(:host => uri.host, :port => uri.port, :password => uri.password)
       #set :cable_enabled, true
       
       uri = URI.parse(ENV["REDISTOGO_URL"])
-      REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+      #REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+      set :cache, Sinatra::Cache::RedisStore.new(:host => uri.host, :port => uri.port, :password => uri.password)
     end
     
     mime_type :json, 'application/json'
