@@ -20,6 +20,7 @@ module Ornitorrinco
       begin
         response = GEOIP.city params[:ip]
         response = response ? { :status => 'ok', :city => response.to_hash[:city_name] }.to_json : { :status => 'not found', :message => "City not found" }.to_json
+        settings.cache.fetch("greet") { "Hello, World!" }
       rescue => e
         error 500, e.message.to_json
       end
