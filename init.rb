@@ -4,13 +4,11 @@ module Ornitorrinco
   class Init < Sinatra::Base
     
     configure do
-      env = ENV['SINATRA_ENV'] || 'development'
-      
+      env = ENV['SINATRA_ENV'] || 'development'      
       GEOIP = GeoIP.new('config/GeoLiteCity.dat')
       
       register Sinatra::Cache
-      set :cache_enabled, true
-      #set :redis_store, RedisStore.new(ENV['REDIS_URL'])
+      set :cache, RedisStore.new(ENV['REDIS_URL'])
     end
     
     mime_type :json, 'application/json'
