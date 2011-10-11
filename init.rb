@@ -8,12 +8,9 @@ module Ornitorrinco
       
       GEOIP = GeoIP.new('config/GeoLiteCity.dat')
       
-      #set :cache, Sinatra::Cache::RedisStore.new(:host => uri.host, :port => uri.port, :password => uri.password)
-      #set :cable_enabled, true
-      
       uri = URI.parse(ENV["REDISTOGO_URL"])
-      #REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
       set :cache, Sinatra::Cache::RedisStore.new(:host => uri.host, :port => uri.port, :password => uri.password)
+      set :cache_enabled, true
     end
     
     mime_type :json, 'application/json'
@@ -24,14 +21,19 @@ module Ornitorrinco
     end
         
     get '/location/:ip' do
-      begin
-        response = GEOIP.city params[:ip]
-        response = response ? { :status => 'ok', :city => response.to_hash[:city_name] }.to_json : { :status => 'not found', :message => "City not found" }.to_json
-        settings.cache.fetch("greet") { "Hello, World!" }
+      begin        
+        city = 
+          if request = GEOIP.city(params[:ip])
+            settings.cache.fetch("#{params[:ip]}") { "#{request.to_hash[:city_name]}" }
+          else
+            settings.cache.fetch("#{params[:ip]}") { "not found" }
+          end
+        
+        { :city => city }.to_json
       rescue => e
         error 500, e.message.to_json
-        #URI.parse ENV['REDIS_URL']
       end
     end
+    
   end
 end
