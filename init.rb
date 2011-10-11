@@ -22,16 +22,10 @@ module Ornitorrinco
         
     get '/location/:ip' do
       begin        
-        city = 
-          if request = GEOIP.city(params[:ip])
-            settings.cache.fetch("#{params[:ip]}") { "#{request.to_hash[:city_name]}" }
-          else
-            settings.cache.fetch("#{params[:ip]}") { "not found" }
-          end
-        
+        city = settings.cache.fetch("#{params[:ip]}") { "#{GEOIP.city(params[:ip]).to_hash[:city_name]}" }
         { :city => city }.to_json
-      rescue => e
-        error 500, e.message.to_json
+      rescue 
+        { :city => 'not found' }.to_json
       end
     end
     
