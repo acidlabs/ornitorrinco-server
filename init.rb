@@ -1,5 +1,4 @@
 require 'yajl/json_gem'
-require 'sinatra/cache'
 
 module Ornitorrinco  
   class Init < Sinatra::Base
